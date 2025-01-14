@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<head>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+
+  const CANVAS_HEIGHT = 600;
+  const CANVAS_WIDTH = 600;
+
+  const TILE_SIZE = 20;
+
+  const gameStates = Object.freeze ({
+    WON : 0,
+    LOST: 1,
+    IS_PLAYING : 2
+  });
+
+  function init() {
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    window.requestAnimationFrame(draw);
+  }
+
+  function draw () {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "black"
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    ctx.fillStyle = "green";
+    //snake
+    ctx.fillRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, TILE_SIZE, TILE_SIZE);
+    window.requestAnimationFrame(draw);
+  }
+  init();
+
+
+  //    while (gameStates.IS_PLAYING){
+  //
+  //    }
+  </script>
+</body>
