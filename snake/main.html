@@ -17,6 +17,9 @@
     LOST: 1,
     IS_PLAYING : 2
   });
+  
+  let snakeX;
+  let snakeY;
 
   function init() {
     canvas.width = CANVAS_WIDTH;
@@ -37,6 +40,38 @@
     ctx.fillRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, TILE_SIZE, TILE_SIZE);
     window.requestAnimationFrame(draw);
   }
+  
+  function checkInBounds(x,y) {
+	//Check Right Bounds - X > ScnSize
+		if(x > CANVAS_WIDTH){
+			return false;
+		}
+	//Check Left Bounds - X < 0
+		if(x < 0){
+			return false;
+		}
+	//Check Top Bounds - Y < 0
+		if(y < 0){
+			return false;
+		}
+	//Check Bottom Bounds - Y > ScnSize
+		if(y > CANVAS_HEIGHT){
+			return false;
+		}
+	//Else return true
+		return true;
+  }
+  
+  function checkSelfCollision(x,y){
+	//If Head coordinates enter snake-occupied tile BAD
+  }
+  
+  function gameOver(){
+	if (!checkInBounds(snakeX,snakeY)){
+		currentstate = gameStates.LOST;
+	}
+  }
+  
   init();
 
 
