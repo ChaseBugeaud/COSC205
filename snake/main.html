@@ -12,6 +12,14 @@
 
   const TILE_SIZE = 20;
 
+  let score = 0;
+
+  let apples = {};
+  let appleId = 0;
+
+  let spawnInterval = 400;
+  let cycleCount = 0;
+
   const gameStates = Object.freeze ({
     WON : 0,
     LOST: 1,
@@ -26,20 +34,84 @@
     window.requestAnimationFrame(draw);
   }
 
-  function draw () {
+  function draw() {
     ctx.globalCompositeOperation = "source-over";
+    drawCanvas();
+    drawSnake();
+    drawApples();
+
+    updateCycle();
+    window.requestAnimationFrame(draw);
+  }
+
+  function drawCanvas() {
     ctx.fillStyle = "black"
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-    ctx.fillStyle = "green";
-    //snake
-    ctx.fillRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, TILE_SIZE, TILE_SIZE);
-    window.requestAnimationFrame(draw);
   }
+
+  function drawSnake() {
+    ctx.fillStyle = "green";
+    ctx.fillRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, TILE_SIZE, TILE_SIZE);
+  }
+
+  function resetScore() {
+    score = 0;
+  }
+
+  function incScore(amount) {
+    score += amount;
+  }
+
+  function spawnApple() {
+    if (apples < 3 && cycleCount == 0) {
+      let id = appleId++;
+      let coords = randomCoord();
+      let key = id.toString();
+      apples[key] = {
+        id: id,
+        x: coords.x,
+        y: coords.y
+      };
+      //TODO: can't be on snake
+    }
+  }
+
+  function setSpawnInterval() {
+    let minFrames = 90;
+    let maxFrames = 150
+    return Math.floor((Math.random() * (maxFrames - minFrames)) + minFrames);
+  }
+
+  function updateCycle() {
+    cycleCount++;
+    cycleCount %= spawnInterval;
+    if (cycleCount == 0) setSpawnInterval();
+  }
+
+  function drawApples() {
+    ctx.fillStyle = "red";
+     //TODO: fix foreach
+    ctx.fillRect(apples.keys(apple => {
+      drawApple(apple);
+    }));
+  }
+
+  function randomCoord() {
+    let xCoord = Math.floor((Math.random() * CANVAS_HEIGHT / TILE_SIZE) + 1);
+    let yCoord = Math.floor((Math.random() * CANVAS_HEIGHT / TILE_SIZE) + 1);
+    let coords = {
+      x: xCoord,
+      y: yCoord
+    }
+    return coords;
+  }
+
+  function drawApple() {
+
+  }
+
   init();
-
-
   //    while (gameStates.IS_PLAYING){
   //
   //    }
