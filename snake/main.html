@@ -14,7 +14,7 @@
 
   let score = 0;
 
-  let apples = {};
+  let apples = [];
   let appleId = 0;
 
   let spawnInterval = 400;
@@ -38,6 +38,7 @@
     ctx.globalCompositeOperation = "source-over";
     drawCanvas();
     drawSnake();
+    spawnApple();
     drawApples();
 
     updateCycle();
@@ -64,11 +65,11 @@
   }
 
   function spawnApple() {
-    if (apples < 3 && cycleCount == 0) {
+    if (apples.length < 3 && cycleCount == 0) {
       let id = appleId++;
       let coords = randomCoord();
       let key = id.toString();
-      apples[key] = {
+      apples[id] = {
         id: id,
         x: coords.x,
         y: coords.y
@@ -77,24 +78,26 @@
     }
   }
 
-  function setSpawnInterval() {
+  function getSpawnInterval() {
     let minFrames = 90;
-    let maxFrames = 150
+    let maxFrames = 150;
     return Math.floor((Math.random() * (maxFrames - minFrames)) + minFrames);
   }
 
   function updateCycle() {
     cycleCount++;
-    cycleCount %= spawnInterval;
-    if (cycleCount == 0) setSpawnInterval();
+
+    cycleCount = cycleCount % spawnInterval;
+    if (cycleCount == 0) {
+       spawnInterval = getSpawnInterval();
+    }
   }
 
   function drawApples() {
     ctx.fillStyle = "red";
-     //TODO: fix foreach
-    ctx.fillRect(apples.keys(apple => {
-      drawApple(apple);
-    }));
+    Object.values(apples).forEach(a => {
+      drawApple(a.x, a.y);
+    });
   }
 
   function randomCoord() {
@@ -107,8 +110,9 @@
     return coords;
   }
 
-  function drawApple() {
-
+  function drawApple(appleX, appleY) {
+    console.log("aaple x ", appleX, "apple y", appleY)
+    ctx.fillRect(appleX * TILE_SIZE, appleY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
   }
 
   init();
