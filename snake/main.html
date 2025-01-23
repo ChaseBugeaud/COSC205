@@ -64,10 +64,15 @@
   
   function checkSelfCollision(x,y){
 	//If Head coordinates enter snake-occupied tile BAD
+	if (x = snake.segmentX && y = snake.segmentY){
+		return true;
+	}
+	return false;
   }
   
   function gameOver(){
-	if (!checkInBounds(snakeX,snakeY)){
+	//If Head is out of bounds or collided with self - end game
+	if (!checkInBounds(headX,headY) || checkSelfCollision(headX, headY)){
 		currentstate = gameStates.LOST;
 	}
   }
