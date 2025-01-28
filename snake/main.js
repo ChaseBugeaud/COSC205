@@ -31,19 +31,10 @@ class Snake {
     } else if (direction == this.movementStates.DOWN) {
 
     }
-
-    function bark() {
-      //TODO: remove, for import testing
-      console.log("the snake barks");
-    }
-
-
-
     //Give headTile new location
     //Iterate through list and shift forward by adding 
     //headTile-location to front of list and disgarding last element
   }
-
 }
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -157,6 +148,25 @@ function drawApple(appleX, appleY) {
   console.log("apple count: ", apples.length)
   ctx.fillRect(appleX * TILE_SIZE, appleY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 }
+function isSnakeCollision(
+  //detects snake collisions with canvas border, apples, and itself
+  //TODO: complete
+  apples,
+  snake,
+  CANVAS_WIDTH_START,
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT_START,
+  CANVAS_HEIGHT) {
+
+
+
+  return false;
+}
+function assertCollision() {
+  //TODO: complete test function
+}
+
+
 
 init();
 //    while (gameStates.IS_PLAYING){
