@@ -157,6 +157,8 @@ function drawApple(appleX, appleY) {
   console.log("apple count: ", apples.length)
   ctx.fillRect(appleX * TILE_SIZE, appleY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 }
+
+//Collision handling functions
 function isInBounds(x, y) {
   //Check Right Bounds - X > ScnSize
   if (x > CANVAS_WIDTH) {
@@ -182,7 +184,7 @@ function isSelfCollision(snakeTiles) {
   //If Head coordinates enter snake-occupied tile BAD
   let snakeHead = snakeTiles[0];
   for (let i = 1; i < snakeTiles.length; i++) {
-    if (snakeHead.xCoord == snakeTiles[i].xCoord && snakeHead.yCoord == snakeTiles[i].yCoord) {
+    if (snakeHead.xCoord === snakeTiles[i].xCoord && snakeHead.yCoord === snakeTiles[i].yCoord) {
       return true;
     }
   }
@@ -195,12 +197,6 @@ function gameOver() {
     currentstate = gameStates.LOST;
   }
 }
-
-function assertCollision() {
-  //TODO: complete test function
-}
-
-
 
 init();
 //    while (gameStates.IS_PLAYING){

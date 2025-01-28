@@ -1,0 +1,50 @@
+1. Out of bounds check:
+    check the snake (x,y) coordinates and check if either are above or below the canvas minimum or maximum.
+2. Snake collision with itself:
+    if the snake head (x,y) is equal to any segment (x,y) pair, trigger game over.
+3. Apple spawn self check:
+    when spawning, apples must check (x,y) coordinates with all preexisting apples and keep generating random (x,y) coordinates until a collision is not found.
+4. Apple spawn snake check:
+    when spawning an apple, ensure it does not land on a snake.
+5. Left movement check:
+    ensure snake moves left when left key is checked.
+6. Right movement check:
+    ensure snake moves right when right key is checked.
+7. Up movement check:
+    ensure snake moves up when up key is checked.
+8. Down movement check:
+    ensure snake moves down when down key is checked.
+9. Win check:
+    if the length of the snake is equal to the canvas width * canvas height, in tiles.
+10. Ensure growth:
+    make sure snake grows by the proper amount of tiles, after eating a tile.
+11. Loss check:
+    every loop, check for game losing collisions (self-collide, canvas border). 
+12. Apple spawn maximum apples:
+    before spawning apples, ensure that no more than 3 apples already exist.
+13. Loss screen:
+    ensure the loss screen is displayed when the game state is set to loss.
+14. Win screen:
+    ensure the win screen is displayed when the game state is set to win.
+15. Canvas size:
+    ensure the canvas size is set to the intended values.
+16. Tile size:
+    check that tiles are equal to the intended pixel values.
+17. Score increase:
+    ensure score increases when apples are consumed.
+18. Score reset:
+    test for score resetting on game loss.
+19. Object rendering as tiles:
+    test to ensure that rendered objects are in the tile grid, and nothing is out of sync with the grid.
+20. Start screen:
+    ensure that, on load, the game displays the start screen.
+21. Initial game state:
+    guarantee game state is not set to playing.
+22. Snake movement direction persists:
+    ensure snake movement direction only changes when a new movement direction is input.
+23. Snake movement repeat direction:
+    make sure the snake stays moving in the same direction when the same movement key is repeatedly pressed.
+24. Snake movement, multiple directions before redraw:
+    when multiple directions are pressed before the screen is redrawn, ensure only the last movement direction is the direction that persists.
+25. Snake backwards movement prevention:
+    ensure the snake cannot move in the opposite direction of what is currently set.
