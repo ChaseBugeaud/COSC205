@@ -1,6 +1,6 @@
 class Snake {
   snakeTiles = [{}];
-
+  
   movementStates = Object.freeze({
     LEFT: 0,
     RIGHT: 1,
@@ -8,28 +8,32 @@ class Snake {
     DOWN: 3
   });
 
+  direction;
+
   constructor(xCoord, yCoord) {
     this.snakeTiles = [{ x: xCoord, y: yCoord }];
+    this.direction = this.movementStates.UP;
   }
 
   grow() {
     //Add location to the end of list
 
   }
-  move(direction, isGrowing) {
+  move() {
     //TODO: check for apple, make apple the snake head
-    if (isGrowing) {
-      grow();
-    }
+    //if (isGrowing) {
+      //grow();
+    //}
 
     if (direction == this.movementStates.LEFT) {
+	    //x-coordinates - 1
 
     } else if (direction == this.movementStates.RIGHT) {
-
+	//x-coordinate + 1
     } else if (direction == this.movementStates.UP) {
-
+	//y-coordinates + 1
     } else if (direction == this.movementStates.DOWN) {
-
+	//y-coordinates - 1
     }
     //Give headTile new location
     //Iterate through list and shift forward by adding 
@@ -77,8 +81,8 @@ function draw() {
   drawCanvas();
   drawSnake();
   spawnApple();
+  move();
   drawApples();
-
   updateCycle();
   window.requestAnimationFrame(draw);
 }
@@ -149,8 +153,8 @@ function randomCoord() {
 }
 
 function drawApple(appleX, appleY) {
-  console.log("aaple x ", appleX, "apple y", appleY)
-  console.log("apple count: ", apples.length)
+  //console.log("aaple x ", appleX, "apple y", appleY)
+  //console.log("apple count: ", apples.length)
   ctx.fillRect(appleX * TILE_SIZE, appleY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 }
 function isInBounds(x, y) {
@@ -195,6 +199,33 @@ function gameOver() {
 function assertCollision() {
   //TODO: complete test function
 }
+
+window.addEventListener(
+	"keydown",
+	(event) => {
+		if (event.defaultPrevented) {
+			return; 
+		}
+
+		switch(event.key) {
+			case "ArrowUp":	
+				snake.direction = snake.movementStates.UP;
+				break;
+			case "ArrowDown":
+				snake.direction = snake.movementStates.DOWN;
+				break;
+			case "ArrowLeft":
+				snake.direction = snake.movementStates.LEFT;
+				break;
+			case "ArrowRight":
+				snake.direction = snake.movementStates.RIGHT;
+				break;
+
+		}
+		event.preventDefault();
+	},
+	true,
+);
 
 
 
