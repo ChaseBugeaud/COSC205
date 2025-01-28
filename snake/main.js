@@ -35,6 +35,10 @@ class Snake {
     //Iterate through list and shift forward by adding 
     //headTile-location to front of list and disgarding last element
   }
+
+  getSnakeTiles() {
+    return this.snakeTiles;
+  }
 }
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -149,20 +153,45 @@ function drawApple(appleX, appleY) {
   console.log("apple count: ", apples.length)
   ctx.fillRect(appleX * TILE_SIZE, appleY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 }
-function isSnakeCollision(
-  //detects snake collisions with canvas border, apples, and itself
-  //TODO: complete
-  apples,
-  snake,
-  CANVAS_WIDTH_START,
-  CANVAS_WIDTH,
-  CANVAS_HEIGHT_START,
-  CANVAS_HEIGHT) {
+function isInBounds(x, y) {
+  //Check Right Bounds - X > ScnSize
+  if (x > CANVAS_WIDTH) {
+    return false;
+  }
+  //Check Left Bounds - X < 0
+  if (x < 0) {
+    return false;
+  }
+  //Check Top Bounds - Y < 0
+  if (y < 0) {
+    return false;
+  }
+  //Check Bottom Bounds - Y > ScnSize
+  if (y > CANVAS_HEIGHT) {
+    return false;
+  }
+  //Else return true
+  return true;
+}
 
-
-
+function isSelfCollision(snakeTiles) {
+  //If Head coordinates enter snake-occupied tile BAD
+  let snakeHead = snakeTiles[0];
+  for (let i = 1; i < snakeTiles.length; i++) {
+    if (snakeHead.xCoord == snakeTiles[i].xCoord && snakeHead.yCoord == snakeTiles[i].yCoord) {
+      return true;
+    }
+  }
   return false;
 }
+
+function gameOver() {
+  //If Head is out of bounds or collided with self - end game
+  if (!isInBounds(headX, headY) || isSelfCollision(headX, headY)) {
+    currentstate = gameStates.LOST;
+  }
+}
+
 function assertCollision() {
   //TODO: complete test function
 }
