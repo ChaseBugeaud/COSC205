@@ -1,5 +1,5 @@
 class Snake {
-  snakeTiles = [{ x: xCoord, y: yCoord }];
+  snakeTiles = [{}];
 
   movementStates = Object.freeze({
     LEFT: 0,
@@ -9,7 +9,7 @@ class Snake {
   });
 
   constructor(xCoord, yCoord) {
-    snakeTiles[0] = { x: xCoord, y: yCoord };
+    this.snakeTiles = [{ x: xCoord, y: yCoord }];
   }
 
   grow() {
@@ -52,6 +52,7 @@ let appleId = 0;
 let spawnInterval = 400;
 let cycleCount = 0;
 
+let snake = new Snake(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, TILE_SIZE, TILE_SIZE);
 
 const gameStates = Object.freeze({
   WON: 0,
