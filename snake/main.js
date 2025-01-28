@@ -54,7 +54,9 @@ let apples = [];
 let appleId = 0;
 
 let spawnInterval = 400;
-let cycleCount = 0;
+const MOVEMENT_INTERVAL = 200;
+let spawnClock = 0;
+let moveClock = 0;
 
 let snake = new Snake(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, TILE_SIZE, TILE_SIZE);
 
@@ -103,7 +105,7 @@ function incScore(amount) {
 }
 
 function spawnApple() {
-  if (apples.length < 3 && cycleCount == 0) {
+  if (apples.length < 3 && spawnClock == 0) {
     let id = appleId++;
     let coords = randomCoord();
     let key = id.toString();
@@ -122,11 +124,13 @@ function getSpawnInterval() {
   return Math.floor((Math.random() * (maxFrames - minFrames)) + minFrames);
 }
 
-function updateCycle() {
-  cycleCount++;
+function updateCycles() {
+  spawnClock++;
+  moveClock++;
 
-  cycleCount = cycleCount % spawnInterval;
-  if (cycleCount == 0) {
+  spawnClock = spawnClock % spawnInterval;
+  moveClock = moveClock % MOVEMENT_INTERVAL;
+  if (spawnClock == 0) {
     spawnInterval = getSpawnInterval();
   }
 }
