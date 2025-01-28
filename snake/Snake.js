@@ -32,6 +32,12 @@ class Snake {
 
     }
 
+    function bark() {
+      //TODO: remove, for import testing
+      console.log("the snake barks");
+    }
+
+
 
     //Give headTile new location
     //Iterate through list and shift forward by adding 

@@ -1,3 +1,4 @@
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -13,6 +14,7 @@ let appleId = 0;
 
 let spawnInterval = 400;
 let cycleCount = 0;
+
 
 const gameStates = Object.freeze({
   WON: 0,
