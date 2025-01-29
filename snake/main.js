@@ -23,6 +23,7 @@ class Snake {
     return snakeTiles;
   }
 
+<<<<<<< HEAD
   grow() {
     //Add location to the end of list
 
@@ -33,6 +34,9 @@ class Snake {
     //if (isGrowing) {
     //grow();
     //}
+=======
+  getNextTile() {
+>>>>>>> main
     let xCoord = this.snakeTiles[0].x;
     let yCoord = this.snakeTiles[0].y;
 
@@ -50,11 +54,25 @@ class Snake {
       yCoord++;
     }
 
-    this.snakeTiles.unshift({ x: xCoord, y: yCoord });
-    this.snakeTiles.pop();
-    //Give headTile new location
-    //Iterate through list and shift forward by adding 
-    //headTile-location to front of list and disgarding last element
+    if (!isInBounds(xCoord, yCoord)) {
+      if (xCoord > CANVAS_WIDTH / TILE_SIZE) {
+        xCoord = 0;
+      } else if (xCoord < 0) {
+        xCoord = CANVAS_WIDTH / TILE_SIZE;
+      }
+      if (yCoord > CANVAS_HEIGHT / 20) {
+        yCoord = 0;
+      } else if (yCoord < 0) {
+        yCoord = CANVAS_HEIGHT / 20;
+      }
+    }
+    return { x: xCoord, y: yCoord };
+  }
+  move(isGrowing) {
+    this.snakeTiles.unshift(this.getNextTile());
+    if (!isGrowing) {
+      this.snakeTiles.pop();
+    }
   }
 
   getSnakeTiles() {
@@ -101,7 +119,11 @@ function init() {
 function moveSnake() {
   let isGrowing = checkAppleCollision();
   if (moveClock == 0) {
+<<<<<<< HEAD
     snake.move(isGrowing);
+=======
+    snake.move(true); //true is placeholder
+>>>>>>> main
   }
 }
 
@@ -214,7 +236,7 @@ function drawApple(appleX, appleY) {
 //Collision handling functions
 function isInBounds(x, y) {
   //Check Right Bounds - X > ScnSize
-  if (x > CANVAS_WIDTH) {
+  if (x > CANVAS_WIDTH / TILE_SIZE) {
     return false;
   }
   //Check Left Bounds - X < 0
@@ -226,7 +248,7 @@ function isInBounds(x, y) {
     return false;
   }
   //Check Bottom Bounds - Y > ScnSize
-  if (y > CANVAS_HEIGHT) {
+  if (y > CANVAS_HEIGHT / 20) {
     return false;
   }
   //Else return true
@@ -246,7 +268,7 @@ function isSelfCollision(snakeTiles) {
 
 function gameOver() {
   //If Head is out of bounds or collided with self - end game
-  if (!isInBounds(headX, headY) || isSelfCollision(headX, headY)) {
+  if (isSelfCollision(headX, headY)) {
     currentstate = gameStates.LOST;
   }
 }
@@ -281,7 +303,4 @@ window.addEventListener(
 
 
 init();
-//    while (gameStates.IS_PLAYING){
-//
-//    }
 
