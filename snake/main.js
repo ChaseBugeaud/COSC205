@@ -35,13 +35,13 @@ class Snake {
       xCoord--;
     }
     else if (this.direction == this.movementStates.RIGHT) {
-	    //x-coordinate + 1
+      //x-coordinate + 1
       xCoord++;
     } else if (this.direction == this.movementStates.UP) {
-	    //y-coordinate + 1
+      //y-coordinate + 1
       yCoord++;
     } else if(this.direction == this.movementStates.DOWN) {
-	  //y-coordinate - 1
+    //y-coordinate - 1
       yCoord--;
     }
 
@@ -94,9 +94,9 @@ function init() {
 }
 
 function moveSnake() {
-	if (moveClock == 0) {
-		snake.move();
-	}
+  if (moveClock == 0) {
+    snake.move();
+  }
 }
 
 function draw() {
@@ -232,30 +232,30 @@ function assertCollision() {
 }
 
 window.addEventListener(
-	"keydown",
-	(event) => {
-		if (event.defaultPrevented) {
-			return; 
-		}
+  "keydown",
+  (event) => {
+    if (event.defaultPrevented) {
+      return;
+    }
 
-		switch(event.key) {
-			case "ArrowUp":	
-				snake.direction = snake.movementStates.UP;
-				break;
-			case "ArrowDown":
-				snake.direction = snake.movementStates.DOWN;
-				break;
-			case "ArrowLeft":
-				snake.direction = snake.movementStates.LEFT;
-				break;
-			case "ArrowRight":
-				snake.direction = snake.movementStates.RIGHT;
-				break;
+    switch(event.key) {
+      case "ArrowUp":
+        snake.direction = snake.movementStates.UP;
+        break;
+      case "ArrowDown":
+        snake.direction = snake.movementStates.DOWN;
+        break;
+      case "ArrowLeft":
+        snake.direction = snake.movementStates.LEFT;
+        break;
+      case "ArrowRight":
+        snake.direction = snake.movementStates.RIGHT;
+        break;
 
-		}
-		event.preventDefault();
-	},
-	true,
+    }
+    event.preventDefault();
+  },
+  true,
 );
 
 
