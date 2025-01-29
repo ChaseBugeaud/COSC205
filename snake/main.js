@@ -23,10 +23,6 @@ class Snake {
     return snakeTiles;
   }
 
-  grow() {
-
-
-  }
   move(isGrowing) {
     let xCoord = this.snakeTiles[0].x;
     let yCoord = this.snakeTiles[0].y;
@@ -45,6 +41,18 @@ class Snake {
       yCoord++;
     }
 
+    if (!isInBounds(xCoord, yCoord)) {
+      if (xCoord > CANVAS_WIDTH / TILE_SIZE) {
+        xCoord = 0;
+      } else if (xCoord < 0) {
+        xCoord = CANVAS_WIDTH / TILE_SIZE;
+      }
+      if (yCoord > CANVAS_HEIGHT / 20) {
+        yCoord = 0;
+      } else if (yCoord < 0) {
+        yCoord = CANVAS_HEIGHT / 20;
+      }
+    }
     this.snakeTiles.unshift({ x: xCoord, y: yCoord });
     if (!isGrowing) {
       this.snakeTiles.pop();
@@ -193,7 +201,7 @@ function drawApple(appleX, appleY) {
 //Collision handling functions
 function isInBounds(x, y) {
   //Check Right Bounds - X > ScnSize
-  if (x > CANVAS_WIDTH) {
+  if (x > CANVAS_WIDTH / TILE_SIZE) {
     return false;
   }
   //Check Left Bounds - X < 0
@@ -205,7 +213,7 @@ function isInBounds(x, y) {
     return false;
   }
   //Check Bottom Bounds - Y > ScnSize
-  if (y > CANVAS_HEIGHT) {
+  if (y > CANVAS_HEIGHT / 20) {
     return false;
   }
   //Else return true
@@ -225,7 +233,7 @@ function isSelfCollision(snakeTiles) {
 
 function gameOver() {
   //If Head is out of bounds or collided with self - end game
-  if (!isInBounds(headX, headY) || isSelfCollision(headX, headY)) {
+  if (isSelfCollision(headX, headY)) {
     currentstate = gameStates.LOST;
   }
 }
