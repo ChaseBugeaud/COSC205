@@ -27,6 +27,7 @@ class Snake {
     //Add location to the end of list
 
   }
+
   move() {
     //TODO: check for apple, make apple the snake head
     //if (isGrowing) {
@@ -98,8 +99,9 @@ function init() {
 }
 
 function moveSnake() {
+  let isGrowing = checkAppleCollision();
   if (moveClock == 0) {
-    snake.move();
+    snake.move(isGrowing);
   }
 }
 
@@ -128,6 +130,23 @@ function drawSnake() {
     // console.log(tile.x + " " + tile.y)
     ctx.fillRect(tile.x * TILE_SIZE, tile.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
   }
+}
+
+function checkAppleCollision() {
+  let nextTile = snake.getNextTile();
+  let collision = false;
+
+  for (let apple of apples) {
+    if (isSameLocation(apple, nextTile)) {
+      collision = true;
+    }
+  }
+
+  return collision;
+}
+
+function isSameLocation(loc1, loc2) {
+  return loc1.x == loc2.x && loc1.y == loc2.y;
 }
 
 function resetScore() {
