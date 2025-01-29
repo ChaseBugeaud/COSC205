@@ -27,18 +27,19 @@ class Snake {
     let xCoord = this.snakeTiles[0].x;
     let yCoord = this.snakeTiles[0].y;
 
-    if (this.direction == this.movementStates.LEFT) {
-      xCoord--;
-    }
-    else if (this.direction == this.movementStates.RIGHT) {
-      //x-coordinate + 1
-      xCoord++;
-    } else if (this.direction == this.movementStates.UP) {
-      //y-coordinate + 1
-      yCoord--;
-    } else if (this.direction == this.movementStates.DOWN) {
-      //y-coordinate - 1
-      yCoord++;
+    switch (this.direction) {
+      case this.movementStates.LEFT:
+        xCoord--;
+        break;
+      case this.movementStates.RIGHT:
+        xCoord++;
+        break;
+      case this.movementStates.UP:
+        yCoord--;
+        break;
+      case this.movementStates.DOWN:
+        yCoord++;
+        break;
     }
 
     //out of bounds check
@@ -160,7 +161,7 @@ function incScore(amount) {
   score += amount;
 }
 
-function spawnApple(snakeTiles) {
+function spawnApple() {
   if (apples.length < 3 && spawnClock == 0) {
     let coords = randomCoord();
     apples.push({
