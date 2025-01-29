@@ -8,36 +8,45 @@ class Snake {
     DOWN: 3
   });
 
-  constructor(xCoord, yCoord) {
-    this.snakeTiles = [{ x: xCoord, y: yCoord }];
-  }
+  direction = undefined;
 
   getTiles() {
     return snakeTiles;
+  }
+
+  constructor(xCoord, yCoord) {
+    this.snakeTiles = [{ x: xCoord, y: yCoord }];
+    this.direction = this.movementStates.UP;
   }
 
   grow() {
     //Add location to the end of list
 
   }
-  move(direction, isGrowing) {
+  move() {
     //TODO: check for apple, make apple the snake head
-    if (isGrowing) {
-      grow();
+    //if (isGrowing) {
+      //grow();
+    //}
+    let xCoord = this.snakeTiles[0].x;
+    let yCoord = this.snakeTiles[0].y;
+    
+    if (this.direction == this.movementStates.LEFT) {
+      xCoord--;
+    }
+    else if (this.direction == this.movementStates.RIGHT) {
+	    //x-coordinate + 1
+      xCoord++;
+    } else if (this.direction == this.movementStates.UP) {
+	    //y-coordinate + 1
+      yCoord++;
+    } else if(this.direction == this.movementStates.DOWN) {
+	  //y-coordinate - 1
+      yCoord--;
     }
 
-    if (direction == this.movementStates.LEFT) {
-
-    } else if (direction == this.movementStates.RIGHT) {
-
-    } else if (direction == this.movementStates.UP) {
-
-    } else if (direction == this.movementStates.DOWN) {
-
-    }
-
-    checkAppleCollision();
-
+    this.snakeTiles.unshift({x: xCoord, y: yCoord});
+    this.snakeTiles.pop();
     //Give headTile new location
     //Iterate through list and shift forward by adding 
     //headTile-location to front of list and disgarding last element
@@ -84,13 +93,19 @@ function init() {
   window.requestAnimationFrame(draw);
 }
 
+function moveSnake() {
+	if (moveClock == 0) {
+		snake.move();
+	}
+}
+
 function draw() {
   ctx.globalCompositeOperation = "source-over";
   drawCanvas();
   drawSnake();
   spawnApple();
+  moveSnake();
   drawApples();
-
   updateCycles();
   window.requestAnimationFrame(draw);
 }
@@ -167,6 +182,8 @@ function randomCoord() {
 }
 
 function drawApple(appleX, appleY) {
+  //console.log("aaple x ", appleX, "apple y", appleY)
+  //console.log("apple count: ", apples.length)
   ctx.fillRect(appleX * TILE_SIZE, appleY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 }
 
@@ -209,6 +226,39 @@ function gameOver() {
     currentstate = gameStates.LOST;
   }
 }
+
+function assertCollision() {
+  //TODO: complete test function
+}
+
+window.addEventListener(
+	"keydown",
+	(event) => {
+		if (event.defaultPrevented) {
+			return; 
+		}
+
+		switch(event.key) {
+			case "ArrowUp":	
+				snake.direction = snake.movementStates.UP;
+				break;
+			case "ArrowDown":
+				snake.direction = snake.movementStates.DOWN;
+				break;
+			case "ArrowLeft":
+				snake.direction = snake.movementStates.LEFT;
+				break;
+			case "ArrowRight":
+				snake.direction = snake.movementStates.RIGHT;
+				break;
+
+		}
+		event.preventDefault();
+	},
+	true,
+);
+
+
 
 init();
 //    while (gameStates.IS_PLAYING){
