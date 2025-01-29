@@ -163,12 +163,20 @@ function incScore(amount) {
 
 function spawnApple() {
   if (apples.length < 3 && spawnClock == 0) {
-    let coords = randomCoord();
+    let coords;
+    while (!coords) {
+      coords = randomCoord();
+      for (let tile of snake.getSnakeTiles()) {
+        if (isSameLocation(tile, coords)) {
+          coords = undefined;
+          break;
+        }
+      }
+    }
     apples.push({
       x: coords.x,
       y: coords.y
     });
-    //TODO: can't be on snake
   }
 }
 
@@ -197,8 +205,8 @@ function drawApples() {
 }
 
 function randomCoord() {
-  let xCoord = Math.floor((Math.random() * CANVAS_HEIGHT / TILE_SIZE) + 1);
-  let yCoord = Math.floor((Math.random() * CANVAS_HEIGHT / TILE_SIZE) + 1);
+  let xCoord = Math.floor(Math.random() * CANVAS_HEIGHT / TILE_SIZE);
+  let yCoord = Math.floor(Math.random() * CANVAS_HEIGHT / TILE_SIZE);
   let coords = {
     x: xCoord,
     y: yCoord
