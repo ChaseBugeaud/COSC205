@@ -41,17 +41,14 @@ class Snake {
       yCoord++;
     }
 
-    if (!isInBounds(xCoord, yCoord)) {
-      if (xCoord > CANVAS_WIDTH / TILE_SIZE) {
-        xCoord = 0;
-      } else if (xCoord < 0) {
-        xCoord = CANVAS_WIDTH / TILE_SIZE;
-      }
-      if (yCoord > CANVAS_HEIGHT / 20) {
-        yCoord = 0;
-      } else if (yCoord < 0) {
-        yCoord = CANVAS_HEIGHT / 20;
-      }
+    //out of bounds check
+    xCoord = xCoord % (CANVAS_WIDTH / TILE_SIZE);
+    yCoord = yCoord % (CANVAS_HEIGHT / TILE_SIZE);
+    if (xCoord < 0) {
+      xCoord = CANVAS_WIDTH / TILE_SIZE - 1;
+    }
+    if (yCoord < 0) {
+      yCoord = CANVAS_HEIGHT / TILE_SIZE - 1;
     }
     return { x: xCoord, y: yCoord };
   }
@@ -163,7 +160,7 @@ function incScore(amount) {
   score += amount;
 }
 
-function spawnApple() {
+function spawnApple(snakeTiles) {
   if (apples.length < 3 && spawnClock == 0) {
     let coords = randomCoord();
     apples.push({
@@ -212,28 +209,6 @@ function drawApple(appleX, appleY) {
   //console.log("aaple x ", appleX, "apple y", appleY)
   //console.log("apple count: ", apples.length)
   ctx.fillRect(appleX * TILE_SIZE, appleY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-}
-
-//Collision handling functions
-function isInBounds(x, y) {
-  //Check Right Bounds - X > ScnSize
-  if (x > CANVAS_WIDTH / TILE_SIZE) {
-    return false;
-  }
-  //Check Left Bounds - X < 0
-  if (x < 0) {
-    return false;
-  }
-  //Check Top Bounds - Y < 0
-  if (y < 0) {
-    return false;
-  }
-  //Check Bottom Bounds - Y > ScnSize
-  if (y > CANVAS_HEIGHT / 20) {
-    return false;
-  }
-  //Else return true
-  return true;
 }
 
 function isSelfCollision(snakeTiles) {
