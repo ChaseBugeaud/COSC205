@@ -1,7 +1,54 @@
 <!DOCTYPE HTML>
 <head>
+	<style>
+		#endScreen {
+			margin: 0;
+			height: 600px;
+			width: 600px;
+			background-color: black;
+			color: green;
+			text-align: center;
+			font-family: pixel;
+		}
+		@font-face {
+			font-family: pixel;
+			src: url("PIXELADE.TTF");
+		}
+		h1 {
+			padding-top: 100px;
+			font-size: 75px;
+		}
+		
+		#playAgainButton {
+			text-align: center;
+			font-family: pixel;
+			color: white;
+			background-color: transparent;
+			font-size: 30px;
+			animation: zoom-in-zoom-out 5s ease infinite;
+		}
+		@keyframes zoom-in-zoom-out {
+			0% {
+				transform: scale(1, 1);
+			}
+			50% {
+				transform: scale(1.25, 1.25);
+			}
+			100% {
+				transform: scale(1, 1);
+			}
+		}
+	</style>
 </head>
 <body>
+	<div id ="endScreen">
+		<h1>Game Over</h1>
+		<img id ="skullImage" src ="skull.png" alt="skull :)" width ="100px" height ="100px">
+		<h3>Final Score:</h3>
+		<h4></h4>
+		<button id ="playAgainButton" type ="button">Play Again</button>
+	</div>
   <canvas id="canvas"></canvas>
+  <script src="endScreen.js"></script>
   <script src="main.js"> </script>
 </body>
