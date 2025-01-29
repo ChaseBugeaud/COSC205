@@ -30,11 +30,11 @@ class Snake {
   move() {
     //TODO: check for apple, make apple the snake head
     //if (isGrowing) {
-      //grow();
+    //grow();
     //}
     let xCoord = this.snakeTiles[0].x;
     let yCoord = this.snakeTiles[0].y;
-    
+
     if (this.direction == this.movementStates.LEFT) {
       xCoord--;
     }
@@ -44,12 +44,12 @@ class Snake {
     } else if (this.direction == this.movementStates.UP) {
       //y-coordinate + 1
       yCoord--;
-    } else if(this.direction == this.movementStates.DOWN) {
-    //y-coordinate - 1
+    } else if (this.direction == this.movementStates.DOWN) {
+      //y-coordinate - 1
       yCoord++;
     }
 
-    this.snakeTiles.unshift({x: xCoord, y: yCoord});
+    this.snakeTiles.unshift({ x: xCoord, y: yCoord });
     this.snakeTiles.pop();
     //Give headTile new location
     //Iterate through list and shift forward by adding 
@@ -239,11 +239,8 @@ function assertCollision() {
 window.addEventListener(
   "keydown",
   (event) => {
-    if (event.defaultPrevented) {
-      return;
-    }
 
-    switch(event.key) {
+    switch (event.key) {
       case "ArrowUp":
         snake.direction = snake.movementStates.UP;
         break;
@@ -258,7 +255,6 @@ window.addEventListener(
         break;
 
     }
-    event.preventDefault();
   },
   true,
 );
