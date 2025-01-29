@@ -39,10 +39,10 @@ class Snake {
       xCoord++;
     } else if (this.direction == this.movementStates.UP) {
       //y-coordinate + 1
-      yCoord++;
+      yCoord--;
     } else if(this.direction == this.movementStates.DOWN) {
     //y-coordinate - 1
-      yCoord--;
+      yCoord++;
     }
 
     this.snakeTiles.unshift({x: xCoord, y: yCoord});
@@ -70,7 +70,7 @@ let apples = [];
 let appleId = 0;
 
 let spawnInterval = 400;
-const MOVEMENT_INTERVAL = 200;
+const MOVEMENT_INTERVAL = 10;
 let spawnClock = 0;
 let moveClock = 0;
 
@@ -119,8 +119,8 @@ function drawCanvas() {
 function drawSnake() {
   ctx.fillStyle = "green";
   let snakeTiles = snake.getSnakeTiles();
-  for (tile in snakeTiles) {
-    console.log(tile.x + " " + tile.y)
+  for (let tile of snakeTiles) {
+    // console.log(tile.x + " " + tile.y)
     ctx.fillRect(tile.x * TILE_SIZE, tile.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
   }
 }
