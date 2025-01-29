@@ -1,5 +1,5 @@
 class Snake {
-  snakeTiles = [{}];
+  snakeTiles = [];
   
   movementStates = Object.freeze({
     LEFT: 0,
@@ -8,7 +8,7 @@ class Snake {
     DOWN: 3
   });
 
-  direction;
+  direction = undefined;
 
   constructor(xCoord, yCoord) {
     this.snakeTiles = [{ x: xCoord, y: yCoord }];
@@ -24,17 +24,25 @@ class Snake {
     //if (isGrowing) {
       //grow();
     //}
-
-    if (direction == this.movementStates.LEFT) {
-	    //x-coordinates - 1
-
-    } else if (direction == this.movementStates.RIGHT) {
-	//x-coordinate + 1
-    } else if (direction == this.movementStates.UP) {
-	//y-coordinates + 1
-    } else if (direction == this.movementStates.DOWN) {
-	//y-coordinates - 1
+    let xCoord = this.snakeTiles[0].x;
+    let yCoord = this.snakeTiles[0].y;
+    
+    if (this.direction == this.movementStates.LEFT) {
+      xCoord--;
     }
+    else if (this.direction == this.movementStates.RIGHT) {
+	    //x-coordinate + 1
+      xCoord++;
+    } else if (this.direction == this.movementStates.UP) {
+	    //y-coordinate + 1
+      yCoord++;
+    } else if(this.direction == this.movementStates.DOWN) {
+	  //y-coordinate - 1
+      yCoord--;
+    }
+
+    this.snakeTiles.unshift({x: xCoord, y: yCoord});
+    this.snakeTiles.pop();
     //Give headTile new location
     //Iterate through list and shift forward by adding 
     //headTile-location to front of list and disgarding last element
@@ -78,14 +86,20 @@ function init() {
   window.requestAnimationFrame(draw);
 }
 
+function moveSnake() {
+	if (moveClock == 0) {
+		snake.move();
+	}
+}
+
 function draw() {
   ctx.globalCompositeOperation = "source-over";
   drawCanvas();
   drawSnake();
   spawnApple();
-  move();
+  moveSnake();
   drawApples();
-  updateCycle();
+  updateCycles();
   window.requestAnimationFrame(draw);
 }
 
