@@ -27,31 +27,29 @@ class Snake {
     let xCoord = this.snakeTiles[0].x;
     let yCoord = this.snakeTiles[0].y;
 
-    if (this.direction == this.movementStates.LEFT) {
-      xCoord--;
-    }
-    else if (this.direction == this.movementStates.RIGHT) {
-      //x-coordinate + 1
-      xCoord++;
-    } else if (this.direction == this.movementStates.UP) {
-      //y-coordinate + 1
-      yCoord--;
-    } else if (this.direction == this.movementStates.DOWN) {
-      //y-coordinate - 1
-      yCoord++;
+    switch (this.direction) {
+      case this.movementStates.LEFT:
+        xCoord--;
+        break;
+      case this.movementStates.RIGHT:
+        xCoord++;
+        break;
+      case this.movementStates.UP:
+        yCoord--;
+        break;
+      case this.movementStates.DOWN:
+        yCoord++;
+        break;
     }
 
-    if (!isInBounds(xCoord, yCoord)) {
-      if (xCoord > CANVAS_WIDTH / TILE_SIZE) {
-        xCoord = 0;
-      } else if (xCoord < 0) {
-        xCoord = CANVAS_WIDTH / TILE_SIZE;
-      }
-      if (yCoord > CANVAS_HEIGHT / 20) {
-        yCoord = 0;
-      } else if (yCoord < 0) {
-        yCoord = CANVAS_HEIGHT / 20;
-      }
+    //out of bounds check
+    xCoord = xCoord % (CANVAS_WIDTH / TILE_SIZE);
+    yCoord = yCoord % (CANVAS_HEIGHT / TILE_SIZE);
+    if (xCoord < 0) {
+      xCoord = CANVAS_WIDTH / TILE_SIZE - 1;
+    }
+    if (yCoord < 0) {
+      yCoord = CANVAS_HEIGHT / TILE_SIZE - 1;
     }
     return { x: xCoord, y: yCoord };
   }
@@ -80,7 +78,7 @@ let apples = [];
 let appleId = 0;
 
 let spawnInterval = 400;
-const MOVEMENT_INTERVAL = 10;
+const MOVEMENT_INTERVAL = 5;
 let spawnClock = 0;
 let moveClock = 0;
 
@@ -104,8 +102,13 @@ function init() {
 }
 
 function moveSnake() {
+  let collidedApple = checkAppleCollision();
   if (moveClock == 0) {
-    snake.move(true); //true is placeholder
+    snake.move(collidedApple);
+    if (collidedApple) {
+      console.log(collidedApple)
+      apples = apples.filter(e => collidedApple !== e);
+    }
   }
 }
 
@@ -136,6 +139,20 @@ function drawSnake() {
   }
 }
 
+function checkAppleCollision() {
+  let nextTile = snake.getNextTile();
+
+  for (let apple of apples) {
+    if (isSameLocation(apple, nextTile)) {
+      return apple;
+    }
+  }
+}
+
+function isSameLocation(loc1, loc2) {
+  return loc1.x == loc2.x && loc1.y == loc2.y;
+}
+
 function resetScore() {
   score = 0;
 }
@@ -146,15 +163,20 @@ function incScore(amount) {
 
 function spawnApple() {
   if (apples.length < 3 && spawnClock == 0) {
-    let id = appleId++;
-    let coords = randomCoord();
-    let key = id.toString();
-    apples[id] = {
-      id: id,
+    let coords;
+    while (!coords) {
+      coords = randomCoord();
+      for (let tile of snake.getSnakeTiles()) {
+        if (isSameLocation(tile, coords)) {
+          coords = undefined;
+          break;
+        }
+      }
+    }
+    apples.push({
       x: coords.x,
       y: coords.y
-    };
-    //TODO: can't be on snake
+    });
   }
 }
 
@@ -183,8 +205,8 @@ function drawApples() {
 }
 
 function randomCoord() {
-  let xCoord = Math.floor((Math.random() * CANVAS_HEIGHT / TILE_SIZE) + 1);
-  let yCoord = Math.floor((Math.random() * CANVAS_HEIGHT / TILE_SIZE) + 1);
+  let xCoord = Math.floor(Math.random() * CANVAS_HEIGHT / TILE_SIZE);
+  let yCoord = Math.floor(Math.random() * CANVAS_HEIGHT / TILE_SIZE);
   let coords = {
     x: xCoord,
     y: yCoord
@@ -196,28 +218,6 @@ function drawApple(appleX, appleY) {
   //console.log("aaple x ", appleX, "apple y", appleY)
   //console.log("apple count: ", apples.length)
   ctx.fillRect(appleX * TILE_SIZE, appleY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-}
-
-//Collision handling functions
-function isInBounds(x, y) {
-  //Check Right Bounds - X > ScnSize
-  if (x > CANVAS_WIDTH / TILE_SIZE) {
-    return false;
-  }
-  //Check Left Bounds - X < 0
-  if (x < 0) {
-    return false;
-  }
-  //Check Top Bounds - Y < 0
-  if (y < 0) {
-    return false;
-  }
-  //Check Bottom Bounds - Y > ScnSize
-  if (y > CANVAS_HEIGHT / 20) {
-    return false;
-  }
-  //Else return true
-  return true;
 }
 
 function isSelfCollision(snakeTiles) {
