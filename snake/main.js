@@ -23,7 +23,7 @@ class Snake {
     return snakeTiles;
   }
 
-  move(isGrowing) {
+  getNextTile() {
     let xCoord = this.snakeTiles[0].x;
     let yCoord = this.snakeTiles[0].y;
 
@@ -53,13 +53,13 @@ class Snake {
         yCoord = CANVAS_HEIGHT / 20;
       }
     }
-    this.snakeTiles.unshift({ x: xCoord, y: yCoord });
+    return { x: xCoord, y: yCoord };
+  }
+  move(isGrowing) {
+    this.snakeTiles.unshift(this.getNextTile());
     if (!isGrowing) {
       this.snakeTiles.pop();
     }
-    //Give headTile new location
-    //Iterate through list and shift forward by adding 
-    //headTile-location to front of list and disgarding last element
   }
 
   getSnakeTiles() {
@@ -105,7 +105,7 @@ function init() {
 
 function moveSnake() {
   if (moveClock == 0) {
-    snake.move();
+    snake.move(true); //true is placeholder
   }
 }
 
