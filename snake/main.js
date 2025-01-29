@@ -78,7 +78,7 @@ let apples = [];
 let appleId = 0;
 
 let spawnInterval = 400;
-const MOVEMENT_INTERVAL = 5;
+const MOVEMENT_INTERVAL = 7;
 let spawnClock = 0;
 let moveClock = 0;
 
