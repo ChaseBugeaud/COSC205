@@ -19,6 +19,10 @@ class Snake {
     this.direction = this.movementStates.UP;
   }
 
+  getTiles() {
+    return snakeTiles;
+  }
+
   grow() {
     //Add location to the end of list
 
@@ -106,6 +110,7 @@ function draw() {
   spawnApple();
   moveSnake();
   drawApples();
+
   updateCycles();
   window.requestAnimationFrame(draw);
 }
