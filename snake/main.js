@@ -23,20 +23,7 @@ class Snake {
     return snakeTiles;
   }
 
-<<<<<<< HEAD
-  grow() {
-    //Add location to the end of list
-
-  }
-
-  move() {
-    //TODO: check for apple, make apple the snake head
-    //if (isGrowing) {
-    //grow();
-    //}
-=======
   getNextTile() {
->>>>>>> main
     let xCoord = this.snakeTiles[0].x;
     let yCoord = this.snakeTiles[0].y;
 
@@ -119,11 +106,7 @@ function init() {
 function moveSnake() {
   let isGrowing = checkAppleCollision();
   if (moveClock == 0) {
-<<<<<<< HEAD
     snake.move(isGrowing);
-=======
-    snake.move(true); //true is placeholder
->>>>>>> main
   }
 }
 
