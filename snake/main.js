@@ -265,7 +265,4 @@ window.addEventListener(
   true,
 );
 
-
-
 init();
-
