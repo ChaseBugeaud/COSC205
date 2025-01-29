@@ -80,7 +80,7 @@ let apples = [];
 let appleId = 0;
 
 let spawnInterval = 400;
-const MOVEMENT_INTERVAL = 10;
+const MOVEMENT_INTERVAL = 5;
 let spawnClock = 0;
 let moveClock = 0;
 
@@ -104,9 +104,13 @@ function init() {
 }
 
 function moveSnake() {
-  let isGrowing = checkAppleCollision();
+  let collidedApple = checkAppleCollision();
   if (moveClock == 0) {
-    snake.move(isGrowing);
+    snake.move(collidedApple);
+    if (collidedApple) {
+      console.log(collidedApple)
+      apples = apples.filter(e => collidedApple !== e);
+    }
   }
 }
 
@@ -139,15 +143,12 @@ function drawSnake() {
 
 function checkAppleCollision() {
   let nextTile = snake.getNextTile();
-  let collision = false;
 
   for (let apple of apples) {
     if (isSameLocation(apple, nextTile)) {
-      collision = true;
+      return apple;
     }
   }
-
-  return collision;
 }
 
 function isSameLocation(loc1, loc2) {
@@ -164,14 +165,11 @@ function incScore(amount) {
 
 function spawnApple() {
   if (apples.length < 3 && spawnClock == 0) {
-    let id = appleId++;
     let coords = randomCoord();
-    let key = id.toString();
-    apples[id] = {
-      id: id,
+    apples.push({
       x: coords.x,
       y: coords.y
-    };
+    });
     //TODO: can't be on snake
   }
 }
