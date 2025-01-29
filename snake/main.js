@@ -24,14 +24,10 @@ class Snake {
   }
 
   grow() {
-    //Add location to the end of list
+
 
   }
-  move() {
-    //TODO: check for apple, make apple the snake head
-    //if (isGrowing) {
-    //grow();
-    //}
+  move(isGrowing) {
     let xCoord = this.snakeTiles[0].x;
     let yCoord = this.snakeTiles[0].y;
 
@@ -50,7 +46,9 @@ class Snake {
     }
 
     this.snakeTiles.unshift({ x: xCoord, y: yCoord });
-    this.snakeTiles.pop();
+    if (!isGrowing) {
+      this.snakeTiles.pop();
+    }
     //Give headTile new location
     //Iterate through list and shift forward by adding 
     //headTile-location to front of list and disgarding last element
@@ -262,7 +260,4 @@ window.addEventListener(
 
 
 init();
-//    while (gameStates.IS_PLAYING){
-//
-//    }
 
