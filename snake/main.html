@@ -1,7 +1,51 @@
 <!DOCTYPE HTML>
 <head>
+	<style>
+		#startScreen {
+			margin: 0;
+			height: 600px;
+			width: 600px;
+			background-color: black;
+			color: green;
+			text-align: center;
+			font-family: pixel;
+		}
+		@font-face {
+			font-family: pixel;
+			src: url("PIXELADE.TTF");
+		}
+		h1 {
+			padding-top: 250px;
+			font-size: 75px;
+		}
+		#startButton {
+			text-align: center;
+			font-family: pixel;
+			color: white;
+			background-color: transparent;
+			font-size: 30px;
+			animation: zoom-in-zoom-out 5s ease infinite;
+		}
+		@keyframes zoom-in-zoom-out {
+			0% {
+				transform: scale(1, 1);
+			}
+			50% {
+				transform: scale(1.25, 1.25);
+			}
+			100% {
+				transform: scale(1, 1);
+			}
+		}
+	</style>
 </head>
 <body>
+	<!--Start Screen Container-->
+	<div id ="startScreen">
+		<h1>Classic Snake</h1>
+		<button id ="startButton" type ="button">Start Game</button>
+	</div>
   <canvas id="canvas"></canvas>
+  <script src="startScreen.js"></script>
   <script src="main.js"> </script>
 </body>

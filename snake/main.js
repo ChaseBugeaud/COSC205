@@ -194,7 +194,7 @@ function gameOver() {
   }
 }
 
-init();
+//init();
 //    while (gameStates.IS_PLAYING){
 //
 //    }
