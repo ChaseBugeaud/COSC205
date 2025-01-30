@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <head>
 	<style>
-		#endScreen {
+		#endScreen, #startScreen {
 			margin: 0;
 			height: 600px;
 			width: 600px;
@@ -19,7 +19,7 @@
 			font-size: 75px;
 		}
 		
-		#playAgainButton {
+		#playAgainButton, #startButton {
 			text-align: center;
 			font-family: pixel;
 			color: white;
@@ -40,7 +40,13 @@
 		}
 	</style>
 </head>
-<body>
+<body onload = "loadStart()">
+	<!--Start Screen Container-->
+	<div id ="startScreen">
+		<h1>Classic Snake</h1>
+		<button id ="startButton" type ="button">Start Game</button>
+	</div>
+	<!--End Screen Container-->
 	<div id ="endScreen">
 		<h1>Game Over</h1>
 		<img id ="skullImage" src ="skull.png" alt="skull :)" width ="100px" height ="100px">
@@ -49,6 +55,6 @@
 		<button id ="playAgainButton" type ="button">Play Again</button>
 	</div>
   <canvas id="canvas"></canvas>
-  <script src="endScreen.js"></script>
+  <script src="start_end_screen.js"></script>
   <script src="main.js"> </script>
 </body>
