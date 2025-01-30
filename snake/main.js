@@ -265,4 +265,4 @@ window.addEventListener(
   true,
 );
 
-init();
+//init();
