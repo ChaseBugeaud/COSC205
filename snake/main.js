@@ -1,5 +1,5 @@
 class Snake {
-  snakeTiles = [{}];
+  snakeTiles = [];
 
   movementStates = Object.freeze({
     LEFT: 0,
@@ -8,32 +8,56 @@ class Snake {
     DOWN: 3
   });
 
+  direction = undefined;
+
+  getTiles() {
+    return snakeTiles;
+  }
+
   constructor(xCoord, yCoord) {
     this.snakeTiles = [{ x: xCoord, y: yCoord }];
+    this.direction = this.movementStates.UP;
   }
 
-  grow() {
-    //Add location to the end of list
-
+  getTiles() {
+    return snakeTiles;
   }
-  move(direction, isGrowing) {
-    //TODO: check for apple, make apple the snake head
-    if (isGrowing) {
-      grow();
+
+  getNextTile() {
+    let xCoord = this.snakeTiles[0].x;
+    let yCoord = this.snakeTiles[0].y;
+
+    switch (this.direction) {
+      case this.movementStates.LEFT:
+        xCoord--;
+        break;
+      case this.movementStates.RIGHT:
+        xCoord++;
+        break;
+      case this.movementStates.UP:
+        yCoord--;
+        break;
+      case this.movementStates.DOWN:
+        yCoord++;
+        break;
     }
 
-    if (direction == this.movementStates.LEFT) {
-
-    } else if (direction == this.movementStates.RIGHT) {
-
-    } else if (direction == this.movementStates.UP) {
-
-    } else if (direction == this.movementStates.DOWN) {
-
+    //out of bounds check
+    xCoord = xCoord % (CANVAS_WIDTH / TILE_SIZE);
+    yCoord = yCoord % (CANVAS_HEIGHT / TILE_SIZE);
+    if (xCoord < 0) {
+      xCoord = CANVAS_WIDTH / TILE_SIZE - 1;
     }
-    //Give headTile new location
-    //Iterate through list and shift forward by adding 
-    //headTile-location to front of list and disgarding last element
+    if (yCoord < 0) {
+      yCoord = CANVAS_HEIGHT / TILE_SIZE - 1;
+    }
+    return { x: xCoord, y: yCoord };
+  }
+  move(isGrowing) {
+    this.snakeTiles.unshift(this.getNextTile());
+    if (!isGrowing) {
+      this.snakeTiles.pop();
+    }
   }
 
   getSnakeTiles() {
@@ -54,9 +78,14 @@ let apples = [];
 let appleId = 0;
 
 let spawnInterval = 400;
-let cycleCount = 0;
+const MOVEMENT_INTERVAL = 7;
+let spawnClock = 0;
+let moveClock = 0;
 
-let snake = new Snake(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, TILE_SIZE, TILE_SIZE);
+let snake = new Snake(
+  (CANVAS_WIDTH / 2) / TILE_SIZE,
+  (CANVAS_HEIGHT / 2) / TILE_SIZE
+);
 
 const gameStates = Object.freeze({
   WON: 0,
@@ -72,14 +101,26 @@ function init() {
   window.requestAnimationFrame(draw);
 }
 
+function moveSnake() {
+  let collidedApple = checkAppleCollision();
+  if (moveClock == 0) {
+    snake.move(collidedApple);
+    if (collidedApple) {
+      console.log(collidedApple)
+      apples = apples.filter(e => collidedApple !== e);
+    }
+  }
+}
+
 function draw() {
   ctx.globalCompositeOperation = "source-over";
   drawCanvas();
   drawSnake();
   spawnApple();
+  moveSnake();
   drawApples();
 
-  updateCycle();
+  updateCycles();
   window.requestAnimationFrame(draw);
 }
 
@@ -91,7 +132,25 @@ function drawCanvas() {
 
 function drawSnake() {
   ctx.fillStyle = "green";
-  ctx.fillRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, TILE_SIZE, TILE_SIZE);
+  let snakeTiles = snake.getSnakeTiles();
+  for (let tile of snakeTiles) {
+    // console.log(tile.x + " " + tile.y)
+    ctx.fillRect(tile.x * TILE_SIZE, tile.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  }
+}
+
+function checkAppleCollision() {
+  let nextTile = snake.getNextTile();
+
+  for (let apple of apples) {
+    if (isSameLocation(apple, nextTile)) {
+      return apple;
+    }
+  }
+}
+
+function isSameLocation(loc1, loc2) {
+  return loc1.x == loc2.x && loc1.y == loc2.y;
 }
 
 function resetScore() {
@@ -103,16 +162,21 @@ function incScore(amount) {
 }
 
 function spawnApple() {
-  if (apples.length < 3 && cycleCount == 0) {
-    let id = appleId++;
-    let coords = randomCoord();
-    let key = id.toString();
-    apples[id] = {
-      id: id,
+  if (apples.length < 3 && spawnClock == 0) {
+    let coords;
+    while (!coords) {
+      coords = randomCoord();
+      for (let tile of snake.getSnakeTiles()) {
+        if (isSameLocation(tile, coords)) {
+          coords = undefined;
+          break;
+        }
+      }
+    }
+    apples.push({
       x: coords.x,
       y: coords.y
-    };
-    //TODO: can't be on snake
+    });
   }
 }
 
@@ -122,11 +186,13 @@ function getSpawnInterval() {
   return Math.floor((Math.random() * (maxFrames - minFrames)) + minFrames);
 }
 
-function updateCycle() {
-  cycleCount++;
+function updateCycles() {
+  spawnClock++;
+  moveClock++;
 
-  cycleCount = cycleCount % spawnInterval;
-  if (cycleCount == 0) {
+  spawnClock = spawnClock % spawnInterval;
+  moveClock = moveClock % MOVEMENT_INTERVAL;
+  if (spawnClock == 0) {
     spawnInterval = getSpawnInterval();
   }
 }
@@ -139,8 +205,8 @@ function drawApples() {
 }
 
 function randomCoord() {
-  let xCoord = Math.floor((Math.random() * CANVAS_HEIGHT / TILE_SIZE) + 1);
-  let yCoord = Math.floor((Math.random() * CANVAS_HEIGHT / TILE_SIZE) + 1);
+  let xCoord = Math.floor(Math.random() * CANVAS_HEIGHT / TILE_SIZE);
+  let yCoord = Math.floor(Math.random() * CANVAS_HEIGHT / TILE_SIZE);
   let coords = {
     x: xCoord,
     y: yCoord
@@ -149,31 +215,9 @@ function randomCoord() {
 }
 
 function drawApple(appleX, appleY) {
-  console.log("aaple x ", appleX, "apple y", appleY)
-  console.log("apple count: ", apples.length)
+  //console.log("aaple x ", appleX, "apple y", appleY)
+  //console.log("apple count: ", apples.length)
   ctx.fillRect(appleX * TILE_SIZE, appleY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-}
-
-//Collision handling functions
-function isInBounds(x, y) {
-  //Check Right Bounds - X > ScnSize
-  if (x > CANVAS_WIDTH) {
-    return false;
-  }
-  //Check Left Bounds - X < 0
-  if (x < 0) {
-    return false;
-  }
-  //Check Top Bounds - Y < 0
-  if (y < 0) {
-    return false;
-  }
-  //Check Bottom Bounds - Y > ScnSize
-  if (y > CANVAS_HEIGHT) {
-    return false;
-  }
-  //Else return true
-  return true;
 }
 
 function isSelfCollision(snakeTiles) {
@@ -189,13 +233,36 @@ function isSelfCollision(snakeTiles) {
 
 function gameOver() {
   //If Head is out of bounds or collided with self - end game
-  if (!isInBounds(headX, headY) || isSelfCollision(headX, headY)) {
+  if (isSelfCollision(headX, headY)) {
     currentstate = gameStates.LOST;
   }
 }
 
-init();
-//    while (gameStates.IS_PLAYING){
-//
-//    }
+function assertCollision() {
+  //TODO: complete test function
+}
 
+window.addEventListener(
+  "keydown",
+  (event) => {
+
+    switch (event.key) {
+      case "ArrowUp":
+        snake.direction = snake.movementStates.UP;
+        break;
+      case "ArrowDown":
+        snake.direction = snake.movementStates.DOWN;
+        break;
+      case "ArrowLeft":
+        snake.direction = snake.movementStates.LEFT;
+        break;
+      case "ArrowRight":
+        snake.direction = snake.movementStates.RIGHT;
+        break;
+
+    }
+  },
+  true,
+);
+
+init();
